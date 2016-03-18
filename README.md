@@ -35,3 +35,6 @@ cp readwrite.summary final_result_readwrite.summary
 ```
 # Contribute to make it Cool !!!
 I know there are several improvement points. So let's colloborate and contribute to make this tool robust and useful for us / others.
+
+# Author List
+- Karan Singh (karan.singh@csc.fi)
