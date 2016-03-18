@@ -1,0 +1,28 @@
+---
+- name: launch compute instance
+  hosts: common 
+  gather_facts: no
+  tasks:
+    - name: Merge output
+      raw: "for i in read write readwrite randread randwrite ; do cat results/result_{{ benchmarking_tool }}/{{ run }}/*_$i.summary >> results/result_{{ benchmarking_tool }}/{{ run }}/$i.summary ; done"
+      args:
+       chdir: "results/result_{{ benchmarking_tool }}/{{ run }}/"
+      delegate_to: 127.0.0.1
+      
+#    - name: Create file
+#      file: path="results/result_{{ benchmarking_tool }}/{{ run }}/{{ item }}.summary" state=touch
+#      delegate_to: 127.0.0.1
+#      with_items:
+#         - read
+#         - write
+#         - randread
+#         - randwrite 
+#
+#    - name: Merge output
+#      local_action: shell cat "results/result_{{ benchmarking_tool }}/{{ run }}/"*_"{{ item }}".summary >> "results/result_{{ benchmarking_tool }}/{{ run }}/{{ item }}".summary
+#      delegate_to: 127.0.0.1
+#      with_items:
+#         - read
+#         - write
+#         - randread
+#         - randwrite

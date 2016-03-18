@@ -1,0 +1,16 @@
+---
+- name: install iozone 
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: iozone 
+
+- name: copying benchmarking script
+  copy:
+    src: "{{ item }}"
+    dest: "{{ benchmarking_directory_path }}"
+    mode: 0744
+  with_fileglob:
+    - ../iozone/*.csv
+    - ../iozone/*.pl
+    - ../iozone/*.sh

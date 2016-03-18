@@ -1,0 +1,5 @@
+nohup.out
+*.retry
+ansible_playbook/results
+ansible_playbook/results/*
+fio/results/*

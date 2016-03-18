@@ -1,0 +1,50 @@
+---
+#- name: list result files 
+#  action: command ls "{{ benchmarking_directory_path }}/results"
+#  register: dumpfiles
+
+#- name: fetch result  files 
+#  fetch: 
+#    src: "{{ benchmarking_directory_path }}/results/{{ item }}" 
+#    dest: results/result_summary/
+#    flat: yes  
+#  with_items: "{{ dumpfiles.stdout_lines }}" 
+
+- name: Check if result_summary directory exists 
+  stat: path="results/result_{{ benchmarking_tool }}/{{ run }}"
+  delegate_to: 127.0.0.1
+  register: directory_check 
+  run_once: true
+
+- name: Rename existing run directory 
+  local_action: command  mv "results/result_{{ benchmarking_tool }}/{{ run }}" "results/result_{{ benchmarking_tool }}/{{ run }}_{{ ansible_date_time.iso8601 }}" 
+  when: directory_check.stat.isdir is defined and directory_check.stat.isdir
+  run_once: true
+
+- name: list summary files
+  shell: ls "{{ mount_point }}"/fio_output/*.summary
+  register: dump_summary_files
+  when: benchmarking_tool == "fio"
+
+- name: fetch result summary 
+  fetch:
+    src: "{{ item }}" 
+    dest: "results/result_{{ benchmarking_tool }}/{{ run }}/"
+    flat: yes 
+  with_items: "{{ dump_summary_files.stdout_lines }}"
+  when: benchmarking_tool == "fio"
+
+- name: list summary files
+  shell: ls "{{ mount_point }}/{{ benchmarking_tool }}"/*.csv.*
+  register: dump_summary_files
+  when: benchmarking_tool == "iozone"
+
+- name: fetch result summary
+  fetch:
+    src: "{{ item }}"
+    dest: "results/result_{{ benchmarking_tool }}/{{ run }}/"
+    flat: yes
+  when: benchmarking_tool == "iozone"
+  with_items: "{{ dump_summary_files.stdout_lines }}"
+
+

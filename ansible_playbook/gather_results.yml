@@ -1,0 +1,7 @@
+---
+- name: Gather FIO results 
+  hosts: common 
+  gather_facts: yes 
+  become: true
+  tasks:
+   - include: roles/benchmarking/tasks/collect_output.yml
