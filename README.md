@@ -33,3 +33,5 @@ for i in read write readwrite randread randwrite ; do cat *_$i.summary >> $i.sum
 for i in read write randread randwrite; do cat $i.summary >> final_result.summary; done 
 cp readwrite.summary final_result_readwrite.summary
 ```
+# Contribute to make it Cool !!!
+I know there are several improvement points. So let's colloborate and contribute to make this tool robust and useful for us / others.
